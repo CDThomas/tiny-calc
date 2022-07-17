@@ -30,14 +30,35 @@ fn eval(expression: Pairs<Rule>) -> i64 {
     PREC_CLIMBER.climb(
         expression,
         |pair: Pair<Rule>| match pair.as_rule() {
+            // TODO: this can overflow so it'd be nice to print a more informative error
             Rule::int => pair.as_str().parse::<i64>().unwrap(),
             Rule::binary_literal => {
-                i64::from_str_radix(pair.as_str().strip_prefix("0b").unwrap(), 2).unwrap()
+                // Unwrap is fine here because parsing has already succeeded
+                let without_prefix = pair.as_str().strip_prefix("0b").unwrap();
+                // TODO: This can still overflow, so it'd be nice to print a more informative error
+                i64::from_str_radix(without_prefix, 2).unwrap()
             }
             Rule::hex_leteral => {
-                i64::from_str_radix(pair.as_str().strip_prefix("0x").unwrap(), 16).unwrap()
+                // Unwrap is fine here because parsing has already succeeded
+                let without_prefix = pair.as_str().strip_prefix("0x").unwrap();
+                // TODO: This can still overflow, so it'd be nice to print a more informative error
+                i64::from_str_radix(without_prefix, 16).unwrap()
             }
             Rule::expr => eval(pair.into_inner()),
+            Rule::calculation => {
+                let mut inner = pair.into_inner();
+                let result = eval(Pairs::single(inner.next().unwrap()));
+
+                let formatter = inner.next().unwrap().as_str();
+
+                match formatter {
+                    "#x" => println!(" = {:#X}", result),
+                    "#b" => println!(" = {:#b}", result),
+                    _ => println!(" = {}", result)
+                }
+
+                result
+            }
             _ => unreachable!(),
         },
         |lhs: i64, op: Pair<Rule>, rhs: i64| match op.as_rule() {
@@ -59,7 +80,9 @@ fn main() {
         let parse_result = Calculator::parse(Rule::calculation, &line);
 
         match parse_result {
-            Ok(calc) => println!(" = {}", eval(calc)),
+            Ok(calc) => {
+                eval(calc);
+            },
             Err(_) => println!(" Syntax error"),
         }
     }

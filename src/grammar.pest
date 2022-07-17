@@ -14,6 +14,8 @@ operation = _{ add | subtract | multiply | divide | power }
 expr = { term ~ (operation ~ term)* }
 term = _{ num | "(" ~ expr ~ ")" }
 
-calculation = _{ SOI ~ expr ~ EOI }
+formatter = @{ "#" ~ ("b" | "x" | "d") }
+
+calculation = { SOI ~ expr ~ formatter? ~ EOI }
 
 WHITESPACE = _{ " " | "\t" }
