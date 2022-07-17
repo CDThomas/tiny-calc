@@ -1,0 +1,19 @@
+num = _{ binary_literal | hex_leteral | int }
+    binary_literal = @{ "0b" ~ ASCII_BIN_DIGIT+ }
+    hex_leteral = @{ "0x" ~ ASCII_HEX_DIGIT+ }
+    int = @{ ("+" | "-")? ~ ASCII_DIGIT+ }
+
+
+operation = _{ add | subtract | multiply | divide | power }
+    add      = { "+" }
+    subtract = { "-" }
+    multiply = { "*" }
+    divide   = { "/" }
+    power    = { "^" }
+
+expr = { term ~ (operation ~ term)* }
+term = _{ num | "(" ~ expr ~ ")" }
+
+calculation = _{ SOI ~ expr ~ EOI }
+
+WHITESPACE = _{ " " | "\t" }
