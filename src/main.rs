@@ -49,12 +49,20 @@ fn eval(expression: Pairs<Rule>) -> i64 {
                 let mut inner = pair.into_inner();
                 let result = eval(Pairs::single(inner.next().unwrap()));
 
-                let formatter = inner.next().unwrap().as_str();
+                // Unwrap is fine here because the next pair will be a formatter or an EOI
+                let next_pair = inner.next().unwrap();
+
+                let formatter = if next_pair.as_rule() == Rule::formatter {
+                    Some(next_pair.as_str())
+                } else {
+                    None
+                };
 
                 match formatter {
-                    "#x" => println!(" = {:#X}", result),
-                    "#b" => println!(" = {:#b}", result),
-                    _ => println!(" = {}", result)
+                    Some("#x") => println!(" = {:#X}", result),
+                    Some("#b") => println!(" = {:#b}", result),
+                    None => println!(" = {}", result),
+                    _ => unreachable!(),
                 }
 
                 result
@@ -66,7 +74,9 @@ fn eval(expression: Pairs<Rule>) -> i64 {
             Rule::subtract => lhs - rhs,
             Rule::multiply => lhs * rhs,
             Rule::divide => lhs / rhs,
-            Rule::power => lhs.pow(rhs.try_into().unwrap()),
+            // TODO: don't panic here if exponent is negative. Could either return a proper error
+            // or add support for floats/decimals/ratios.
+            Rule::power => lhs.pow(rhs.try_into().expect("exponent can only be a positive number")),
             _ => unreachable!(),
         },
     )
