@@ -46,7 +46,7 @@ Current limitations:
 * All operations must be on integers
 * Division only returns the integer part and remainders are discarded
 * Exponents must be non-negative
-
-These are all fixable, but may or may not be changed.
+* Only positive hex and binary literals are supported
+* Formatting negative numbers as hex or binary will print the two's complement representation
 
 
