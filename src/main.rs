@@ -1,3 +1,7 @@
+// Originally lifted from the Pest examples and modified to add formatting support and only operate
+// on integers.
+// See: https://github.com/pest-parser/book/tree/3058693e2e8f76eb8f34f3d636bf861c0281a311/examples/calculator
+
 #[macro_use]
 extern crate lazy_static;
 extern crate pest;
