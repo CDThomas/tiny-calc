@@ -22,7 +22,7 @@ tiny-calc
 
 From there, you can perform arithmetic operations:
 ```
-2 ^ 4 / 4 * 5 + 6 - 1
+(9 - 7) ^ 4 / 4 * 5 + 6 - 1
   = 25
 ```
 
