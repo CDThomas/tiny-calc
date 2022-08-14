@@ -29,4 +29,5 @@ pub struct BinaryOp {
 pub enum Op {
     Add,
     Sub,
+    Mul,
 }
