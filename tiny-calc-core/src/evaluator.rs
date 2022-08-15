@@ -1,7 +1,8 @@
 use crate::ast::*;
 
-pub fn eval(calc: Calculation) -> i64 {
-    eval_expr(calc.expr)
+pub fn eval(calc: Calculation) -> String {
+    let output = eval_expr(calc.expr);
+    format!(" = {output}")
 }
 
 pub fn eval_expr(expr: Expr) -> i64 {
@@ -13,7 +14,7 @@ pub fn eval_expr(expr: Expr) -> i64 {
                 Op::Sub => eval_expr(*lhs) - eval_expr(*rhs),
                 Op::Mul => eval_expr(*lhs) * eval_expr(*rhs),
             }
-        }
+        },
     }
 }
 
@@ -27,26 +28,26 @@ mod test {
         let ast = parse("1").unwrap();
         let output = eval(ast);
 
-        assert_eq!(output, 1);
+        assert_eq!(output, " = 1");
 
         let ast = parse("1 + 2").unwrap();
         let output = eval(ast);
 
-        assert_eq!(output, 3);
+        assert_eq!(output, " = 3");
 
         let ast = parse("1 + 2 * 3").unwrap();
         let output = eval(ast);
 
-        assert_eq!(output, 7);
+        assert_eq!(output, " = 7");
 
         let ast = parse("10 - 2 * 3").unwrap();
         let output = eval(ast);
 
-        assert_eq!(output, 4);
+        assert_eq!(output, " = 4");
 
         let ast = parse("10 - 2 * 3 + 1").unwrap();
         let output = eval(ast);
 
-        assert_eq!(output, 5);
+        assert_eq!(output, " = 5");
     }
 }

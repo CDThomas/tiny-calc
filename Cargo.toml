@@ -2,4 +2,5 @@
 
 members = [
     "tiny-calc-core",
+    "tiny-calc-cli",
 ]

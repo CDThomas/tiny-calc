@@ -1,0 +1,11 @@
+[package]
+name = "tiny-calc-cli"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "tiny-calc"
+path = "src/main.rs"
+
+[dependencies]
+tiny-calc-core = { path = "../tiny-calc-core" }
