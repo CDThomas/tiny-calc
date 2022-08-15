@@ -1,10 +1,7 @@
 [package]
-name = "tiny-calc"
+name = "tiny-calc-core"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-lazy_static = "1.1"
-pest = "2.0"
-pest_derive = "2.0"
 nom = "7.1.1"
