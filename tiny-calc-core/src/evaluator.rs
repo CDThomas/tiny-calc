@@ -25,29 +25,17 @@ mod test {
 
     #[test]
     fn eval_works() {
-        let ast = parse("1").unwrap();
-        let output = eval(ast);
+        let cases = vec![
+            ("1", " = 1"),
+            ("1 + 2", " = 3"),
+            ("1 + 2 * 3", " = 7"),
+            ("10 - 2 * 3", " = 4"),
+            ("10 - 2 * 3 + 1", " = 5"),
+        ];
 
-        assert_eq!(output, " = 1");
-
-        let ast = parse("1 + 2").unwrap();
-        let output = eval(ast);
-
-        assert_eq!(output, " = 3");
-
-        let ast = parse("1 + 2 * 3").unwrap();
-        let output = eval(ast);
-
-        assert_eq!(output, " = 7");
-
-        let ast = parse("10 - 2 * 3").unwrap();
-        let output = eval(ast);
-
-        assert_eq!(output, " = 4");
-
-        let ast = parse("10 - 2 * 3 + 1").unwrap();
-        let output = eval(ast);
-
-        assert_eq!(output, " = 5");
+        for (input, expected) in cases {
+            let ast = parse(input).expect("failed to parse");
+            assert_eq!(eval(ast), expected);
+        }
     }
 }
